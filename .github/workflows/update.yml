@@ -1,0 +1,38 @@
+name: Update M3U Playlist
+
+on:
+  schedule:
+    # Runs every 30 minutes
+    - cron: '*/30 * * * *'
+  workflow_dispatch: # Allows manual execution from the GitHub Actions tab
+
+permissions:
+  contents: write # Required for GitHub Actions to push changes to your repository
+
+jobs:
+  update-playlist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run update script
+        run: node update.js
+
+      - name: Commit and Push if updated
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add playlist.m3u
+          if git diff --staged --quiet; then
+            echo "No changes in playlist."
+          else
+            git commit -m "Auto-update playlist [skip ci]"
+            git push
+          fi
