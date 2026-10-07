@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 
-const TARGET_URL = "http://jiotvgo.sparkbl.dpdns.org/channels?type=m3uraw";
+const TARGET_URL = "http://jiotvgo.sparkbl.in/channels?type=m3uraw";
 const OUTPUT_FILE = "playlist.m3u";
 
 async function fetchAndUpdatePlaylist() {
